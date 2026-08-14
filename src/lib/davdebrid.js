@@ -141,10 +141,16 @@ export default class Davdebrid {
     await cache.set(cacheKey, activeStats, {ttl: 86400});
 
     console.log(`Updating plex library ...`);
+    
+    // FIX: Fetch the directories from the private method
+    const directories = await this.#getDirectories();
+    
     const headers = {'X-Plex-Token': plexToken, Accept: 'application/json'};
-
     const sections = await fetch(`${plexUrl}/library/sections`, {headers}).then(res => res.json());
-    const sectionLocationRegex = new RegExp(`\/(${this.directories.map(dir => dir.name).join('|')})`);
+    
+    // const sectionLocationRegex = new RegExp(`\/(${this.directories.map(dir => dir.name).join('|')})`);
+    // FIX: Use the local "directories" variable instead of "this.directories"
+    const sectionLocationRegex = new RegExp(`\/(${directories.map(dir => dir.name).join('|')})`);
 
     // rclone --dir-cache-time 5s
     await wait(5000);
