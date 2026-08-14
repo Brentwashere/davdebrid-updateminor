@@ -1,10 +1,4 @@
-# Default Configuration - Cannot be Overwritten
-# To customize, please edit the 'config.custom.yml' file.
-
-# Folder Organizer Conditions
-# Files available on the debrid service will be organized into directories based on specified conditions.
-# If a file matches a 'unique' directory condition, no further `unique` directory conditions will be checked for that file.
-
+# Configuration for Custom Folder Organizer Conditions
 directories:
 
   # This directory contains all files, regardless of type.
@@ -13,6 +7,15 @@ directories:
     unique: false
     cond: {}
 
+  # FILTER TRAP: Catches supplemental material first so they do not fall into Shows or Movies.
+  - name: 'Supplemental'
+    unique: true
+    cond:
+      regex: '\b([bB][eE][hH][iI][nN][dD]\s[tT][hH][eE]\s[sS][cC][eE][nN][eE][sS]|[fF][eE][aA][tT][uU][rR][eE][tT][tT][eE]|[iI][nN][tT][eE][rR][vV][iI][eE][wW]|[mM][aA][kK][iI][nN][gG]\s[oO][fF]|[dD][eE][lL][eE][tT][eE][dD]\s[sS][cC][eE][nN][eE]|[bB][lL][oO][oO][pP][eE][rR][sS]|[tT][rR][aA][iI][lL][eE][rR]|[cC][lL][iI][pP]|[eE][xX][tT][rR][aA][sS]|[bB][oO][nN][uU][sS]|[sS][hH][oO][rR][tT]|[sS][aA][mM][pP][lL][eE])\b'
+      fileTypes:
+        - 'video'
+        - 'subtitle'
+
   # This directory contains only video and subtitle files that match the specified regex 
   # or are located within a parent directory containing more than six video files 
   # (e.g., torrent with multiple videos).
@@ -20,8 +23,7 @@ directories:
     unique: true
     cond:
       or:
-        regex: '[0-9]+E[0-9]+|[0-9]+x[0-9]+'
-        minVideosInParent: 6
+        regex: '\b([sS]?[0-9]{1,2}[eExX][0-9]{1,3}|[eE][pP]\.?\s?[0-9]{1,3})\b'
       fileTypes:
         - 'video'
         - 'subtitle'
@@ -33,3 +35,4 @@ directories:
       fileTypes:
         - 'video'
         - 'subtitle'
+
