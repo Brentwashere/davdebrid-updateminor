@@ -6,28 +6,22 @@ directories:
     unique: false
     cond: {}
 
-  # This directory contains only video and subtitle files that match the specified regex
-  # AND DO NOT match the supplemental material pattern.
-  - name: 'Shows'
+  # Matches typical show syntax (S01E01, ep1, etc.)
+  # FIRST ensures the filename does NOT contain any supplemental keywords via negative lookahead.
+  - name: 'shows'
     unique: true
     cond:
-      and:
-        - or:
-            regex: '\b([sS]?[0-9]{1,2}[eExX][0-9]{1,3}|[eE][pP]\.?\s?[0-9]{1,3})\b'
-        - not:
-            regex: '\b([bB][eE][hH][iI][nN][dD]\s[tT][hH][eE]\s[sS][cC][eE][nN][eE][sS]|[fF][eE][aA][tT][uU][rR][eE][tT][tT][eE]|[iI][nN][tT][eE][rR][vV][iI][eE][wW]|[mM][aA][kK][iI][nN][gG]\s[oO][fF]|[dD][eE][lL][eE][tT][eE][dD]\s[sS][cC][eE][nN][eE]|[bB][lL][oO][oO][pP][eE][rR][sS]|[tT][rR][aA][iI][lL][eE][rR]|[cC][lL][iI][pP]|[eE][xX][tT][rR][aA][sS]|[bB][oO][nN][uU][sS]|[sS][hH][oO][rR][tT]|[sS][aA][mM][pP][lL][eE])\b'
+      regex: '^(?!.*\b(behind\sthe\sscenes|featurette|interview|making\sof|deleted\sscene|loopers|trailer|clip|extras|bonus|short|sample)\b).*\b([sS]?[0-9]{1,2}[eExX][0-9]{1,3}|[eE][pP]\.?\s?[0-9]{1,3})\b'
     fileTypes:
       - 'video'
       - 'subtitle'
 
-  # This directory contains all remaining video and subtitle files that do not match 
-  # the conditions of previous unique directories AND do not match supplemental material.
-  - name: 'Movies'
+  # Matches everything else, except files containing supplemental keywords.
+  # If a file has a supplemental keyword, it fails this regex and goes un-organized (or stays in All).
+  - name: 'movies'
     unique: true
     cond:
-      and:
-        - not:
-            regex: '\b([bB][eE][hH][iI][nN][dD]\s[tT][hH][eE]\s[sS][cC][eE][nN][eE][sS]|[fF][eE][aA][tT][uU][rR][eE][tT][tT][eE]|[iI][nN][tT][eE][rR][vV][iI][eE][wW]|[mM][aA][kK][iI][nN][gG]\s[oO][fF]|[dD][eE][lL][eE][tT][eE][dD]\s[sS][cC][eE][nN][eE]|[bB][lL][oO][oO][pP][eE][rR][sS]|[tT][rR][aA][iI][lL][eE][rR]|[cC][lL][iI][pP]|[eE][xX][tT][rR][aA][sS]|[bB][oO][nN][uU][sS]|[sS][hH][oO][rR][tT]|[sS][aA][mM][pP][lL][eE])\b'
+      regex: '^(?!.*\b(behind\sthe\sscenes|featurette|interview|making\sof|deleted\sscene|loopers|trailer|clip|extras|bonus|short|sample)\b).*'
     fileTypes:
       - 'video'
       - 'subtitle'
