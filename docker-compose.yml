@@ -1,7 +1,7 @@
 name: davdebrid-brent
 services:
 
-  davdebrid:
+  davdebrid-brent:
     image: brentwashere/davdebrid-updateminor:always
     container_name: davdebrid-brent
     restart: always
