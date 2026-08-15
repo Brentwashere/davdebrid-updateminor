@@ -25,8 +25,9 @@ directories:
   - name: 'Movies'
     unique: true
     cond:
-      not:
-        regex: '\b([bB][eE][hH][iI][nN][dD]\s[tT][hH][eE]\s[sS][cC][eE][nN][eE][sS]|[fF][eE][aA][tT][uU][rR][eE][tT][tT][eE]|[iI][nN][tT][eE][rR][vV][iI][eE][wW]|[mM][aA][kK][iI][nN][gG]\s[oO][fF]|[dD][eE][lL][eE][tT][eE][dD]\s[sS][cC][eE][nN][eE]|[bB][lL][oO][oO][pP][eE][rR][sS]|[tT][rR][aA][iI][lL][eE][rR]|[cC][lL][iI][pP]|[eE][xX][tT][rR][aA][sS]|[bB][oO][nN][uU][sS]|[sS][hH][oO][rR][tT]|[sS][aA][mM][pP][lL][eE])\b'
+      and:
+        - not:
+            regex: '\b([bB][eE][hH][iI][nN][dD]\s[tT][hH][eE]\s[sS][cC][eE][nN][eE][sS]|[fF][eE][aA][tT][uU][rR][eE][tT][tT][eE]|[iI][nN][tT][eE][rR][vV][iI][eE][wW]|[mM][aA][kK][iI][nN][gG]\s[oO][fF]|[dD][eE][lL][eE][tT][eE][dD]\s[sS][cC][eE][nN][eE]|[bB][lL][oO][oO][pP][eE][rR][sS]|[tT][rR][aA][iI][lL][eE][rR]|[cC][lL][iI][pP]|[eE][xX][tT][rR][aA][sS]|[bB][oO][nN][uU][sS]|[sS][hH][oO][rR][tT]|[sS][aA][mM][pP][lL][eE])\b'
     fileTypes:
       - 'video'
       - 'subtitle'
