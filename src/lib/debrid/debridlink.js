@@ -27,6 +27,45 @@ export default class DebridLink extends Debrid {
     perPage = perPage || 100;
     const files = [];
     const query = {perPage};
+
+     // 1. Fetch the absolute first page (Page 0)
+    let res = await this.#request('GET', '/seedbox/list', { query: { ...query, page: 0 } });
+    const pagination = res.pagination;
+    const results = [res];
+
+    // 2. Fetch remaining pages sequentially
+    // For 0-based indexing: Page 1 is the second page. 
+    // Total pages to fetch is bounded by (pagination.pages - 1)
+    const lastPageTarget = Math.min(pagination.pages, maxPages) - 1;
+
+    for (let page = 1; page <= lastPageTarget; page++) {
+        const pageRes = await this.#request('GET', '/seedbox/list', { query: { ...query, page } });
+        results.push(pageRes);
+        
+        // Optional safety: un-comment the line below if you still get rate-limited
+        // await wait(200); 
+    }
+
+    // 3. Process accumulated data
+    return results.reduce((files, res) => {
+        for(let torrent of res.value){
+            for(let file of torrent.files){
+                if(file.downloadPercent == 100){
+                    files.push({
+                        name: file.name,
+                        size: file.size,
+                        type: fileType(file.name),
+                        url: file.downloadUrl,
+                        id: file.id,
+                        lastModified: new Date(torrent.created * 1000),
+                        parent: { id: torrent.id, name: torrent.name }
+                    });
+                }
+            }
+        }
+        return files;
+    }, []);
+}
     let res = await this.#request('GET', '/seedbox/list', {query});
     const pagination = res.pagination;
     const promises = [Promise.resolve(res)];
