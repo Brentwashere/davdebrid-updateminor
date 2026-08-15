@@ -1,38 +1,32 @@
 # Configuration for Custom Folder Organizer Conditions
 directories:
-
   # This directory contains all files, regardless of type.
   # Since this is not a unique condition, files may also appear in other applicable directories.
   - name: 'All'
     unique: false
     cond: {}
 
-  # FILTER TRAP: Catches supplemental material first so they do not fall into Shows or Movies.
-  - name: 'Supplemental'
-    unique: true
-    cond:
-      regex: '\b([bB][eE][hH][iI][nN][dD]\s[tT][hH][eE]\s[sS][cC][eE][nN][eE][sS]|[fF][eE][aA][tT][uU][rR][eE][tT][tT][eE]|[iI][nN][tT][eE][rR][vV][iI][eE][wW]|[mM][aA][kK][iI][nN][gG]\s[oO][fF]|[dD][eE][lL][eE][tT][eE][dD]\s[sS][cC][eE][nN][eE]|[bB][lL][oO][oO][pP][eE][rR][sS]|[tT][rR][aA][iI][lL][eE][rR]|[cC][lL][iI][pP]|[eE][xX][tT][rR][aA][sS]|[bB][oO][nN][uU][sS]|[sS][hH][oO][rR][tT]|[sS][aA][mM][pP][lL][eE])\b'
-      fileTypes:
-        - 'video'
-        - 'subtitle'
-
-  # This directory contains only video and subtitle files that match the specified regex 
-  # or are located within a parent directory containing more than six video files 
-  # (e.g., torrent with multiple videos).
+  # This directory contains only video and subtitle files that match the specified regex
+  # AND DO NOT match the supplemental material pattern.
   - name: 'Shows'
     unique: true
     cond:
-      or:
-        regex: '\b([sS]?[0-9]{1,2}[eExX][0-9]{1,3}|[eE][pP]\.?\s?[0-9]{1,3})\b'
-      fileTypes:
-        - 'video'
-        - 'subtitle'
+      and:
+        - or:
+            regex: '\b([sS]?[0-9]{1,2}[eExX][0-9]{1,3}|[eE][pP]\.?\s?[0-9]{1,3})\b'
+        - not:
+            regex: '\b([bB][eE][hH][iI][nN][dD]\s[tT][hH][eE]\s[sS][cC][eE][nN][eE][sS]|[fF][eE][aA][tT][uU][rR][eE][tT][tT][eE]|[iI][nN][tT][eE][rR][vV][iI][eE][wW]|[mM][aA][kK][iI][nN][gG]\s[oO][fF]|[dD][eE][lL][eE][tT][eE][dD]\s[sS][cC][eE][nN][eE]|[bB][lL][oO][oO][pP][eE][rR][sS]|[tT][rR][aA][iI][lL][eE][rR]|[cC][lL][iI][pP]|[eE][xX][tT][rR][aA][sS]|[bB][oO][nN][uU][sS]|[sS][hH][oO][rR][tT]|[sS][aA][mM][pP][lL][eE])\b'
+    fileTypes:
+      - 'video'
+      - 'subtitle'
 
-  # This directory contains all remaining video and subtitle files that do not match the conditions of previous unique directories (Shows).
+  # This directory contains all remaining video and subtitle files that do not match 
+  # the conditions of previous unique directories AND do not match supplemental material.
   - name: 'Movies'
     unique: true
     cond:
-      fileTypes:
-        - 'video'
-        - 'subtitle'
-
+      not:
+        regex: '\b([bB][eE][hH][iI][nN][dD]\s[tT][hH][eE]\s[sS][cC][eE][nN][eE][sS]|[fF][eE][aA][tT][uU][rR][eE][tT][tT][eE]|[iI][nN][tT][eE][rR][vV][iI][eE][wW]|[mM][aA][kK][iI][nN][gG]\s[oO][fF]|[dD][eE][lL][eE][tT][eE][dD]\s[sS][cC][eE][nN][eE]|[bB][lL][oO][oO][pP][eE][rR][sS]|[tT][rR][aA][iI][lL][eE][rR]|[cC][lL][iI][pP]|[eE][xX][tT][rR][aA][sS]|[bB][oO][nN][uU][sS]|[sS][hH][oO][rR][tT]|[sS][aA][mM][pP][lL][eE])\b'
+    fileTypes:
+      - 'video'
+      - 'subtitle'
