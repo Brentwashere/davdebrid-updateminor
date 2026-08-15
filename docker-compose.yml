@@ -2,7 +2,7 @@ name: davdebrid-brent
 services:
 
   davdebrid:
-    image: brentwashere/davdebrid-updateminor:latest
+    image: brentwashere/davdebrid-updateminor:always
     container_name: davdebrid-brent
     restart: always
     environment:
